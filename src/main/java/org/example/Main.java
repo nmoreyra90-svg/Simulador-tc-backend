@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.domain.Championship;
 import org.example.domain.Track;
 import org.example.domain.Driver;
 
@@ -8,6 +9,34 @@ public class Main {
         Track rafaela = new Track(1L, "Autódromo Ciudad de Rafaela", "Rafaela", 4740);
         System.out.println("Pista cargada: " + rafaela.getName() + " - Longitud: " + rafaela.getLengthInMeters() + " metros.");
         Driver piloto = new Driver(1L, "Mariano Werner", 37);
-        System.out.println("Piloto inscrito: " + piloto.getName());
+        // Creamos el torneo vacío
+        Championship torneo = new Championship();
+
+        // 1. GENERADOR DE PILOTOS DE PRUEBA
+        for (int i = 1; i <= 15; i++) {
+            // Creamos un piloto genérico. Su ID y su nombre cambian en cada vuelta.
+            Driver pilotoPrueba = new Driver((long) i, "Piloto Genérico " + i, 80);
+
+            // Le damos puntos al azar (entre 0 y 300) para poder probar el filtro
+            int puntosAleatorios = (int) (Math.random() * 300);
+            pilotoPrueba.addPoints(puntosAleatorios);
+
+            // Lo inscribimos al torneo
+            torneo.inscribirPiloto(pilotoPrueba);
+        }
+
+        System.out.println("--- FIN DE INSCRIPCIONES ---");
+
+        // 2. LA PRUEBA DE FUEGO (El Paso 3)
+        // Ejecutamos el motor de clasificación
+        torneo.clasificarCopaDeOro();
+
+        System.out.println("--- LOS 12 CLASIFICADOS ---");
+
+        // 3. MOSTRAMOS EL RESULTADO
+        // Le pedimos al torneo la lista de la Copa de Oro y la imprimimos
+        for (Driver clasificado : torneo.getCopaDeOro()) {
+            System.out.println(clasificado.getName() + " - Puntos: " + clasificado.getChampionshipPoints());
+        }
     }
 }

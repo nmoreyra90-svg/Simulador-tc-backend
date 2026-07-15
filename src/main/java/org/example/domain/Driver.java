@@ -6,12 +6,13 @@ public class Driver {
     private String name;
     private int mmr; // Skill
     private int championshipPoints;
-
+    private boolean hasVictory;
     public Driver(Long id, String name, int mmr) {
         this.id = id;
         this.name = name;
         this.mmr = mmr;
         this.championshipPoints = 0;
+        this.hasVictory = false;
     }
 
     public Long getId() { return id; }
@@ -21,5 +22,12 @@ public class Driver {
 
     public void addPoints(int points) {
         this.championshipPoints += points;
+    }
+    public boolean hasVictory() {
+        return hasVictory;
+    }
+
+    public void registerVictory() {
+        this.hasVictory = true;
     }
 }
