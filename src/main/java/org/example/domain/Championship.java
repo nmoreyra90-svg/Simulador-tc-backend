@@ -48,4 +48,28 @@ public class Championship {
 
         System.out.println("Clasificación a la Copa de Oro completada. Ingresaron " + limite + " pilotos.");
     }
+
+    // --- LÓGICA: LOS 3 DE ÚLTIMO MINUTO ---
+    public void clasificarTresDeUltimoMinuto() {
+
+        // 1. Filtramos los pilotos de la etapa regular que NO están en la copa de oro
+        // 2. Tomamos solo los 3 primeros (limit)
+        // 3. Los convertimos en una lista inmutable
+        List<Driver> tresDeUltimoMinuto = this.etapaRegular.stream()
+                .filter(piloto -> !this.copaDeOro.contains(piloto))
+                .limit(3)
+                .toList();
+
+        // 4. Los agregamos a la lista oficial de la Copa de Oro
+        this.copaDeOro.addAll(tresDeUltimoMinuto);
+
+        // Mensaje de consola para verificar que funcionó al testear
+        // Mensaje de consola para verificar que funcionó al testear
+        System.out.println("✅ Clasificación de último minuto completada. Ingresaron " + tresDeUltimoMinuto.size() + " pilotos:");
+        // Recorremos los 3 elegidos y mostramos sus nombres
+        tresDeUltimoMinuto.forEach(piloto ->
+                System.out.println("   - " + piloto.getName() + " - Puntos: " + piloto.getChampionshipPoints())
+        );
+    }
 }
+

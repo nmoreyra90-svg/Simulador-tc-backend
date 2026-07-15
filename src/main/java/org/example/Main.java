@@ -31,12 +31,17 @@ public class Main {
         // Ejecutamos el motor de clasificación
         torneo.clasificarCopaDeOro();
 
+        // Restauramos el título que se había borrado
         System.out.println("--- LOS 12 CLASIFICADOS ---");
 
-        // 3. MOSTRAMOS EL RESULTADO
+        // 3. MOSTRAMOS EL RESULTADO (Los 12 originales)
         // Le pedimos al torneo la lista de la Copa de Oro y la imprimimos
         for (Driver clasificado : torneo.getCopaDeOro()) {
             System.out.println(clasificado.getName() + " - Puntos: " + clasificado.getChampionshipPoints());
         }
+
+        // 4. LOS 3 DE ÚLTIMO MINUTO
+        // Ya clasificamos y mostramos a los 12, ahora ejecutamos el nuevo método
+        torneo.clasificarTresDeUltimoMinuto();
     }
 }
