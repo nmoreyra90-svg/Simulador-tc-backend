@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- 1. Agregamos el Parent de Spring Boot (Transforma el proyecto base en app Spring) -->
+    <!-- El Padre que administra las versiones mágicamente -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.7</version>
+        <version>3.1.5</version>
         <relativePath/>
     </parent>
 
@@ -17,14 +17,13 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <!-- 2. Corregimos a Java 17 según las reglas de tu stack técnico -->
+        <!-- Forzamos Java 17 según tu stack técnico -->
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <!-- 3. Acá está el bloque de dependencias que te faltaba -->
     <dependencies>
         <!-- Spring Data JPA -->
         <dependency>
