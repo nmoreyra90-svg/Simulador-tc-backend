@@ -1,47 +1,54 @@
 package org.example;
 
 import org.example.domain.Championship;
-import org.example.domain.Track;
 import org.example.domain.Driver;
+import org.example.service.ChampionshipService;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 
+import java.util.List;
+
+@SpringBootApplication
 public class Main {
     public static void main(String[] args) {
-        Track rafaela = new Track(1L, "Autódromo Ciudad de Rafaela", "Rafaela", 4740);
-        System.out.println("Pista cargada: " + rafaela.getName() + " - Longitud: " + rafaela.getLengthInMeters() + " metros.");
-        Driver piloto = new Driver(1L, "Mariano Werner", 37);
-        // Creamos el torneo vacío
-        Championship torneo = new Championship();
+        // Arrancamos el motor de Spring Boot
+        ApplicationContext context = SpringApplication.run(Main.class, args);
 
-        // 1. GENERADOR DE PILOTOS DE PRUEBA
-        for (int i = 1; i <= 15; i++) {
-            // Creamos un piloto genérico. Su ID y su nombre cambian en cada vuelta.
-            Driver pilotoPrueba = new Driver((long) i, "Piloto Genérico " + i, 80);
+        System.out.println("\n🏁 Arrancando Sistema del Turismo Carretera...");
 
-            // Le damos puntos al azar (entre 0 y 300) para poder probar el filtro
-            int puntosAleatorios = (int) (Math.random() * 300);
-            pilotoPrueba.addPoints(puntosAleatorios);
+        // Le pedimos a Spring que nos preste tu nuevo servicio
+        ChampionshipService campeonatoService = context.getBean(ChampionshipService.class);
 
-            // Lo inscribimos al torneo
-            torneo.inscribirPiloto(pilotoPrueba);
+        try {
+            // 1. Inicializamos el campeonato en la base de datos
+            Championship torneo = campeonatoService.inicializarNuevoCampeonato();
+            Long torneoId = torneo.getId();
+            System.out.println("✅ Campeonato creado con éxito (ID: " + torneoId + ").");
+
+            // 2. Inscribimos los 15 pilotos generados automáticamente
+            campeonatoService.generarEInscribirPilotosDePrueba(torneoId);
+            System.out.println("✅ 15 Pilotos generados e inscriptos en el torneo.");
+
+            // 3. Clasificamos a la Copa de Oro (los mejores 12)
+            campeonatoService.ejecutarClasificacionCopaDeOro(torneoId);
+            System.out.println("🏆 Clasificados a la Copa de Oro definidos.");
+
+            // 4. Agregamos a los 3 de Último Minuto
+            campeonatoService.ejecutarClasificacionUltimoMinuto(torneoId);
+            System.out.println("⏱️ 3 Pilotos de Último Minuto definidos.");
+
+            // 5. Mostramos los resultados finales por consola
+            List<Driver> clasificados = campeonatoService.obtenerClasificadosCopaDeOro(torneoId);
+            System.out.println("\n--- 🏁 PILOTOS EN LA COPA DE ORO 🏁 ---");
+            for (Driver piloto : clasificados) {
+                System.out.println("- " + piloto.getName() + " (Puntos: " + piloto.getChampionshipPoints() + ")");
+            }
+
+            System.out.println("\n✅ Ejecución finalizada con éxito.");
+
+        } catch (Exception e) {
+            System.out.println("❌ Hubo un error en la simulación: " + e.getMessage());
         }
-
-        System.out.println("--- FIN DE INSCRIPCIONES ---");
-
-        // 2. LA PRUEBA DE FUEGO (El Paso 3)
-        // Ejecutamos el motor de clasificación
-        torneo.clasificarCopaDeOro();
-
-        // Restauramos el título que se había borrado
-        System.out.println("--- LOS 12 CLASIFICADOS ---");
-
-        // 3. MOSTRAMOS EL RESULTADO (Los 12 originales)
-        // Le pedimos al torneo la lista de la Copa de Oro y la imprimimos
-        for (Driver clasificado : torneo.getCopaDeOro()) {
-            System.out.println(clasificado.getName() + " - Puntos: " + clasificado.getChampionshipPoints());
-        }
-
-        // 4. LOS 3 DE ÚLTIMO MINUTO
-        // Ya clasificamos y mostramos a los 12, ahora ejecutamos el nuevo método
-        torneo.clasificarTresDeUltimoMinuto();
     }
 }
