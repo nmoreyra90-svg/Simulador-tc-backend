@@ -1,23 +1,28 @@
-# Simulador de Turismo Carretera (TC)
+# 🏁 Simulador del Turismo Carretera (Backend API)
 
-Proyecto de software enfocado en la gestión, simulación y seguimiento del ranking oficial del Turismo Carretera. Este sistema permite registrar resultados de carreras y visualizar el posicionamiento de los pilotos de manera dinámica.
+Un motor de simulación para el campeonato del Turismo Carretera (TC) argentino, construido con **Java** y **Spring Boot**. Este proyecto modela la lógica de negocio detrás del torneo de automovilismo más importante del país, gestionando pilotos, campeonatos y los complejos sistemas de clasificación (Copa de Oro y los 3 de Último Minuto).
 
-## 🚀 Características Principales
-- **Simulación de Carreras:** Lógica interna para el procesamiento de resultados deportivos.
-- **Ranking en Tiempo Real:** Visualización actualizada del rendimiento de los pilotos.
-- **Gestión de Datos Relacional:** Base de datos robusta utilizando PostgreSQL para asegurar la integridad de la información deportiva.
+## 🛠️ Tecnologías y Arquitectura
+Este proyecto fue desarrollado aplicando buenas prácticas de programación orientada a objetos (POO), inyección de dependencias y una arquitectura robusta en capas (Service-Repository-Domain):
 
-## 🛠 Tecnologías Utilizadas
-- **Lenguaje:** Java
-- **Base de Datos:** PostgreSQL
-- **Control de Versiones:** Git / GitHub
+*   **Lenguaje:** Java 21
+*   **Framework:** Spring Boot 3
+*   **Persistencia:** Spring Data JPA / Hibernate
+*   **Base de Datos:** PostgreSQL (Producción) / H2 (Entorno de pruebas temporales)
+*   **Gestor de Dependencias:** Maven
 
-## ⚙️ Cómo ejecutar el proyecto
-1. Clonar el repositorio:
-   ```bash
-   git clone https://github.com/nmoreyra90-svg/Simulador-tc-backend.git
-2. Configurar la conexión a tu base de datos PostgreSQL local.
-3. Compilar y ejecutar la clase principal.
+## ⚙️ Características Principales (MVP)
+*   **Generación de Grilla:** Carga automatizada de pilotos reales e históricos de la ACTC.
+*   **Simulación de Torneo:** Asignación de puntajes a través del sistema de campeonato.
+*   **Filtro Copa de Oro:** Algoritmo de clasificación para los 12 mejores pilotos de la etapa regular.
+*   **Clasificación Último Minuto:** Lógica de repesca para incluir a 3 pilotos adicionales en la definición del torneo.
 
-## 📈 Estado del Proyecto
-Actualmente en fase de desarrollo activo. Se está optimizando la capa de persistencia de datos y la interfaz de usuario.
+## 🚀 Cómo ejecutar el proyecto
+
+1.  Clonar el repositorio.
+2.  Configurar las credenciales de la base de datos en `src/main/resources/application.properties` (preparado para PostgreSQL).
+3.  Ejecutar la clase `Main.java` (o utilizar el comando `mvn spring-boot:run`).
+4.  Observar la simulación completa y los resultados de los clasificados en la consola de salida.
+
+---
+*Proyecto desarrollado como parte de un portfolio profesional. Estudiante de 2do año de Desarrollo de Software, Universidad de Pilar.*
