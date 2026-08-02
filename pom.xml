@@ -37,6 +37,13 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <!-- Spring Web (NUEVA: Para habilitar los Controllers REST) -->
+        <!-- Spring Web (NUEVA: Para habilitar los Controllers REST) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

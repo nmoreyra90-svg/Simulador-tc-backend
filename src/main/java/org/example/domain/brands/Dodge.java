@@ -9,7 +9,8 @@ import org.example.domain.Driver;
 @DiscriminatorValue("Dodge")
 public class Dodge extends CarPolimorfico {
 
-    protected Dodge() {}
+    protected Dodge() {
+    }
 
     public Dodge(Long id, int carNumber, Driver driver) {
         super(id, carNumber, driver);
