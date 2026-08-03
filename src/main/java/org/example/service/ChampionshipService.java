@@ -32,12 +32,14 @@ public class ChampionshipService {
         Championship torneo = championshipRepository.findById(campeonatoId)
                 .orElseThrow(() -> new RuntimeException("Error: Campeonato no encontrado con ID " + campeonatoId));
 
-        // Lista inyectada con la grilla real del Turismo Carretera
+        // Lista inyectada con 20 pilotos para probar la exclusión de la Copa de Oro
         String[] grillaTC = {
                 "Mariano Werner", "Julián Santero", "José Manuel Urcera", "Jonatan Castellano",
                 "Santiago Mangoni", "Mauricio Lambiris", "Matias Rossi", "Germán Todino",
                 "Gastón Mazzacane", "Juan Martín Trucco", "Valentín Aguirre", "Christian Ledesma",
-                "Nicolás Trosset", "Agustin Canapino", "Facundo Ardusso"
+                "Nicolás Trosset", "Agustin Canapino", "Facundo Ardusso",
+                // 5 pilotos extra para validar que queden eliminados
+                "Diego Ciantini", "Marcos Landa", "Facundo Chapur", "Otto Fritzler", "Juan Cruz Benvenuti"
         };
 
         for (String nombrePiloto : grillaTC) {
