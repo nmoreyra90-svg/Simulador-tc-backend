@@ -34,16 +34,22 @@ public class Championship {
         this.copaDeOro = new ArrayList<>();
     }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public List<Driver> getEtapaRegular() { return etapaRegular; }
+    public List<Driver> getEtapaRegular() {
+        return etapaRegular;
+    }
 
     public void inscribirPiloto(Driver piloto) {
         this.etapaRegular.add(piloto);
         System.out.println("Piloto inscrito con éxito en la Etapa Regular: " + piloto.getName());
     }
 
-    public List<Driver> getCopaDeOro() { return copaDeOro; }
+    public List<Driver> getCopaDeOro() {
+        return copaDeOro;
+    }
 
     public void clasificarCopaDeOro() {
         this.etapaRegular.sort((piloto1, piloto2) ->
@@ -58,17 +64,12 @@ public class Championship {
     }
 
     public void clasificarTresDeUltimoMinuto() {
-        List<Driver> tresDeUltimoMinuto = this.etapaRegular.stream()
-                .filter(piloto -> !this.copaDeOro.contains(piloto))
+        java.util.List<Driver> tresNuevos = this.etapaRegular.stream()
+                .filter(driver -> !this.copaDeOro.contains(driver))
+                .sorted((d1, d2) -> Integer.compare(d2.getChampionshipPoints(), d1.getChampionshipPoints()))
                 .limit(3)
                 .toList();
 
-        this.copaDeOro.addAll(tresDeUltimoMinuto);
-
-        System.out.println("Clasificación de último minuto completada. Ingresaron " + tresDeUltimoMinuto.size() + " pilotos:");
-        tresDeUltimoMinuto.forEach(piloto ->
-                System.out.println(" - " + piloto.getName() + " - Puntos: " + piloto.getChampionshipPoints())
-        );
+        this.copaDeOro.addAll(tresNuevos);
     }
 }
-
