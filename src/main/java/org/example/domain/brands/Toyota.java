@@ -9,9 +9,12 @@ import org.example.domain.Driver;
 @DiscriminatorValue("TOYOTA")
 public class Toyota extends CarPolimorfico {
 
-    protected Toyota() {}
+    protected Toyota() {
+    }
 
-    public Toyota(Long id, int carNumber, Driver driver) { super(id, carNumber, driver); }
+    public Toyota(Long id, int carNumber, Driver driver) {
+        super(id, carNumber, driver);
+    }
 
     @Override
     public int calcularVelocidadMaxima() {

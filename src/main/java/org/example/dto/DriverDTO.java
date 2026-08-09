@@ -9,7 +9,7 @@ public record DriverDTO(
         int championshipPoints,
         boolean hasVictory
 ) {
-    // Patrón Factory Method: Centraliza la transformación de Entidad a DTO
+
     public static DriverDTO fromEntity(Driver driver) {
         return new DriverDTO(
                 driver.getId(),

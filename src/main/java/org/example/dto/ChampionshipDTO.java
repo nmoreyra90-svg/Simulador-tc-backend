@@ -1,23 +1,31 @@
 package org.example.dto;
 
 import org.example.domain.Championship;
+import org.example.domain.Driver;
+
 import java.util.List;
 
 public record ChampionshipDTO(
         Long id,
         List<DriverDTO> etapaRegular,
         List<DriverDTO> copaDeOro,
-        List<DriverDTO> eliminadosEtapaRegular // 1. Agregamos el atributo requerido
+        List<DriverDTO> eliminadosEtapaRegular,
+        String campeon
 ) {
     public static ChampionshipDTO fromEntity(Championship championship) {
 
-        // 2. Lógica de dominio aislada en el DTO (Propiedad Calculada)
+
         List<DriverDTO> pilotosEliminados = championship.getEtapaRegular().stream()
                 .filter(driver -> !championship.getCopaDeOro().contains(driver))
                 .map(DriverDTO::fromEntity)
-                .toList(); // Java 16+: más limpio y garantiza inmutabilidad
+                .toList();
 
-        // 3. Retornamos la instancia inmutable
+
+        String nombreCampeon = championship.obtenerCampeon()
+                .map(Driver::getName)
+                .orElse("Campeonato en curso / Sin ganador válido");
+
+
         return new ChampionshipDTO(
                 championship.getId(),
                 championship.getEtapaRegular().stream()
@@ -26,7 +34,8 @@ public record ChampionshipDTO(
                 championship.getCopaDeOro().stream()
                         .map(DriverDTO::fromEntity)
                         .toList(),
-                pilotosEliminados // Inyectamos el cálculo en memoria
+                pilotosEliminados,
+                nombreCampeon
         );
     }
 }

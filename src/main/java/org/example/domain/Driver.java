@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.util.Objects;
 
 @Entity
 public class Driver {
@@ -14,10 +13,11 @@ public class Driver {
     private String name;
     private int mmr; // Skill
     private int championshipPoints;
-    private boolean hasVictory;
+    private boolean hasVictory = false;
 
-    // Constructor vacío exigido por JPA
-    protected Driver() {}
+
+    protected Driver() {
+    }
 
     public Driver(Long id, String name, int mmr) {
         this.id = id;
@@ -27,26 +27,41 @@ public class Driver {
         this.hasVictory = false;
     }
 
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public int getMmr() { return mmr; }
-    public int getChampionshipPoints() { return championshipPoints; }
+    public Long getId() {
+        return id;
+    }
 
-    public void addPoints(int points) { this.championshipPoints += points; }
-    public boolean hasVictory() { return hasVictory; }
+    public String getName() {
+        return name;
+    }
+
+    public int getMmr() {
+        return mmr;
+    }
+
+    public int getChampionshipPoints() {
+        return championshipPoints;
+    }
+
+    public void addPoints(int points) {
+        this.championshipPoints += points;
+    }
+
+    public boolean hasVictory() {
+        return hasVictory;
+    }
 
     public void registerVictory() {
         this.hasVictory = true;
     }
 
-    // --- ESTÁNDAR JPA: Comparación por Identidad de Base de Datos ---
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Driver driver = (Driver) o;
-        // Dos pilotos son el mismo si tienen exactamente el mismo ID numérico de PostgreSQL
+
         return id != null && id.equals(driver.id);
     }
 

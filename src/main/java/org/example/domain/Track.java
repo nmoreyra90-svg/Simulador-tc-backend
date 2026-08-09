@@ -14,8 +14,9 @@ public class Track {
     private String city;
     private int lengthInMeters;
 
-    // Constructor vacío exigido por JPA
-    protected Track() {}
+
+    protected Track() {
+    }
 
     public Track(Long id, String name, String city, int lengthInMeters) {
         this.id = id;
@@ -24,6 +25,11 @@ public class Track {
         this.lengthInMeters = lengthInMeters;
     }
 
-    public String getName() { return name; }
-    public int getLengthInMeters() { return lengthInMeters; }
+    public String getName() {
+        return name;
+    }
+
+    public int getLengthInMeters() {
+        return lengthInMeters;
+    }
 }

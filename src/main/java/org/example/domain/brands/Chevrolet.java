@@ -9,10 +9,15 @@ import org.example.domain.Driver;
 @DiscriminatorValue("CHEVROLET")
 public class Chevrolet extends CarPolimorfico {
 
-    protected Chevrolet() {}
+    protected Chevrolet() {
+    }
 
-    public Chevrolet(Long id, int carNumber, Driver driver) { super(id, carNumber, driver); }
+    public Chevrolet(Long id, int carNumber, Driver driver) {
+        super(id, carNumber, driver);
+    }
 
     @Override
-    public int calcularVelocidadMaxima() { return 275 - (this.kilosDeLastre * 1); }
+    public int calcularVelocidadMaxima() {
+        return 275 - this.kilosDeLastre;
+    }
 }

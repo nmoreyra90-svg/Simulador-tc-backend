@@ -13,8 +13,19 @@ public class Car {
         this.driver = driver;
     }
 
-    public Long getId() { return id; }
-    public String getBrand() { return brand; }
-    public int getCarNumber() { return carNumber; }
-    public Driver getDriver() { return driver; }
+    public Long getId() {
+        return id;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public int getCarNumber() {
+        return carNumber;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
 }

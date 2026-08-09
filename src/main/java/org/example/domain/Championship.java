@@ -1,8 +1,11 @@
 package org.example.domain;
 
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Comparator;
+import java.util.Optional;
 
 @Entity
 public class Championship {
@@ -11,7 +14,6 @@ public class Championship {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Tabla intermedia para la etapa regular
     @ManyToMany
     @JoinTable(
             name = "championship_etapa_regular",
@@ -20,7 +22,7 @@ public class Championship {
     )
     private List<Driver> etapaRegular;
 
-    // Tabla intermedia para la Copa de Oro
+
     @ManyToMany
     @JoinTable(
             name = "championship_copa_oro",
@@ -44,7 +46,6 @@ public class Championship {
 
     public void inscribirPiloto(Driver piloto) {
         this.etapaRegular.add(piloto);
-        System.out.println("Piloto inscrito con éxito en la Etapa Regular: " + piloto.getName());
     }
 
     public List<Driver> getCopaDeOro() {
@@ -60,7 +61,6 @@ public class Championship {
         for (int i = 0; i < limite; i++) {
             this.copaDeOro.add(this.etapaRegular.get(i));
         }
-        System.out.println("Clasificación a la Copa de Oro completada. Ingresaron " + limite + " pilotos.");
     }
 
     public void clasificarTresDeUltimoMinuto() {
@@ -71,5 +71,11 @@ public class Championship {
                 .toList();
 
         this.copaDeOro.addAll(tresNuevos);
+    }
+
+    public Optional<Driver> obtenerCampeon() {
+        return this.copaDeOro.stream()
+                .filter(Driver::hasVictory)
+                .max(Comparator.comparingInt(Driver::getChampionshipPoints));
     }
 }

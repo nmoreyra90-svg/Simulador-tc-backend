@@ -7,6 +7,7 @@ import org.example.repository.DriverRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -15,7 +16,7 @@ public class ChampionshipService {
     private final ChampionshipRepository championshipRepository;
     private final DriverRepository driverRepository;
 
-    // Práctica Senior: Inyección de dependencias por constructor
+
     public ChampionshipService(ChampionshipRepository championshipRepository, DriverRepository driverRepository) {
         this.championshipRepository = championshipRepository;
         this.driverRepository = driverRepository;
@@ -32,14 +33,13 @@ public class ChampionshipService {
         Championship torneo = championshipRepository.findById(campeonatoId)
                 .orElseThrow(() -> new RuntimeException("Error: Campeonato no encontrado con ID " + campeonatoId));
 
-        // Lista inyectada con 20 pilotos para probar la exclusión de la Copa de Oro
+
         String[] grillaTC = {
                 "Mariano Werner", "Julián Santero", "José Manuel Urcera", "Jonatan Castellano",
                 "Santiago Mangoni", "Mauricio Lambiris", "Matias Rossi", "Germán Todino",
                 "Gastón Mazzacane", "Juan Martín Trucco", "Valentín Aguirre", "Christian Ledesma",
-                "Nicolás Trosset", "Agustin Canapino", "Facundo Ardusso",
-                // 5 pilotos extra para validar que queden eliminados
-                "Diego Ciantini", "Marcos Landa", "Facundo Chapur", "Otto Fritzler", "Juan Cruz Benvenuti"
+                "Nicolás Trosset", "Agustin Canapino", "Facundo Ardusso", "Diego Ciantini", "Marcos Landa",
+                "Facundo Chapur", "Otto Fritzler", "Juan Cruz Benvenuti"
         };
 
         for (String nombrePiloto : grillaTC) {
@@ -77,7 +77,42 @@ public class ChampionshipService {
         Championship torneo = championshipRepository.findById(campeonatoId)
                 .orElseThrow(() -> new RuntimeException("Error: Campeonato no encontrado"));
 
-        torneo.getCopaDeOro().size();
         return torneo.getCopaDeOro();
+    }
+
+    @Transactional
+    public void simularFechaCopaDeOro(Long campeonatoId) {
+
+
+        Championship torneo = championshipRepository.findById(campeonatoId)
+                .orElseThrow(() -> new RuntimeException("Error: Campeonato no encontrado con ID " + campeonatoId));
+
+
+        List<Driver> pilotosCopaDeOro = torneo.getCopaDeOro();
+
+
+        if (pilotosCopaDeOro.size() != 15) {
+            throw new IllegalStateException("Fallo de dominio: La simulación requiere exactamente 15 pilotos clasificados.");
+        }
+
+
+        Collections.shuffle(pilotosCopaDeOro);
+
+
+        for (int i = 0; i < pilotosCopaDeOro.size(); i++) {
+            Driver piloto = pilotosCopaDeOro.get(i);
+
+            if (i == 0) {
+
+                piloto.addPoints(45);
+                piloto.registerVictory();
+            } else {
+
+                int puntosPosicion = 35 - (i * 2);
+                piloto.addPoints(Math.max(0, puntosPosicion));
+            }
+        }
+
+        championshipRepository.save(torneo);
     }
 }
