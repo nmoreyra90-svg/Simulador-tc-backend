@@ -1,5 +1,6 @@
 package org.example.domain;
 
+import org.example.exception.CampeonatoInvalidoException;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -53,17 +54,28 @@ public class Championship {
     }
 
     public void clasificarCopaDeOro() {
+        // 1. EL ESCUDO: Si no hay 12 pilotos, cortamos la ejecución y lanzamos el error
+        if (this.etapaRegular.size() < 12) {
+            throw new CampeonatoInvalidoException("Imposible iniciar la Copa de Oro. El reglamento exige un mínimo de 12 pilotos en la Etapa Regular, pero hay registrados " + this.etapaRegular.size() + " pilotos.");
+        }
+
+        // 2. Lógica normal
         this.etapaRegular.sort((piloto1, piloto2) ->
                 Integer.compare(piloto2.getChampionshipPoints(), piloto1.getChampionshipPoints())
         );
-        int limite = Math.min(12, this.etapaRegular.size());
+
         this.copaDeOro.clear();
-        for (int i = 0; i < limite; i++) {
+        for (int i = 0; i < 12; i++) {
             this.copaDeOro.add(this.etapaRegular.get(i));
         }
     }
 
     public void clasificarTresDeUltimoMinuto() {
+        // 1. EL ESCUDO: Validamos que la Copa de Oro ya exista antes de agregar los de último minuto
+        if (this.copaDeOro.size() < 12) {
+            throw new IllegalStateException("Inconsistencia en el campeonato: No se pueden clasificar los 3 de último minuto porque la Copa de Oro no está formada.");
+        }
+
         java.util.List<Driver> tresNuevos = this.etapaRegular.stream()
                 .filter(driver -> !this.copaDeOro.contains(driver))
                 .sorted((d1, d2) -> Integer.compare(d2.getChampionshipPoints(), d1.getChampionshipPoints()))
