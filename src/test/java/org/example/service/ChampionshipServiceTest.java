@@ -42,4 +42,24 @@ class ChampionshipServiceTest {
         // Verificamos que el mensaje sea exactamente el que programaste
         assertEquals("Imposible iniciar la Copa de Oro. El reglamento exige un mínimo de 12 pilotos en la Etapa Regular, pero hay registrados 0 pilotos.", excepcion.getMessage());
     }
+
+    @Test
+    void ejecutarClasificacionUltimoMinuto_SinCopaDeOro_LanzaExcepcion() {
+        // 1. PREPARACIÓN (Arrange)
+        Long campeonatoId = 1L;
+        // Creamos un campeonato nuevo (por defecto tiene 0 pilotos en la Copa de Oro)
+        Championship torneoSinCopa = new Championship();
+
+        when(championshipRepository.findById(campeonatoId)).thenReturn(Optional.of(torneoSinCopa));
+
+        // 2. EJECUCIÓN (Act) y 3. VALIDACIÓN (Assert)
+        IllegalStateException excepcion = assertThrows(
+                IllegalStateException.class,
+                () -> championshipService.ejecutarClasificacionUltimoMinuto(campeonatoId)
+        );
+
+        // Verificamos que el mensaje exacto de estado inconsistente salte correctamente
+        assertEquals("Inconsistencia en el campeonato: No se pueden clasificar los 3 de último minuto porque la Copa de Oro no está formada.", excepcion.getMessage());
+    }
+
 }
