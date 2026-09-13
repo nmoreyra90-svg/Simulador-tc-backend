@@ -2,12 +2,12 @@ package org.example.domain.brands;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import org.example.domain.CarPolimorfico;
+import org.example.domain.Car;
 import org.example.domain.Driver;
 
 @Entity
 @DiscriminatorValue("Dodge")
-public class Dodge extends CarPolimorfico {
+public class Dodge extends Car {
 
     protected Dodge() {
     }

@@ -6,6 +6,7 @@ import org.example.repository.ChampionshipRepository;
 import org.example.repository.DriverRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.example.exception.RecursoNoEncontradoException;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,7 +32,7 @@ public class ChampionshipService {
     @Transactional
     public void generarEInscribirPilotosDePrueba(Long campeonatoId) {
         Championship torneo = championshipRepository.findById(campeonatoId)
-                .orElseThrow(() -> new RuntimeException("Error: Campeonato no encontrado con ID " + campeonatoId));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Error: Campeonato no encontrado con ID " + campeonatoId));
 
 
         String[] grillaTC = {
@@ -57,7 +58,7 @@ public class ChampionshipService {
     @Transactional
     public void ejecutarClasificacionCopaDeOro(Long campeonatoId) {
         Championship torneo = championshipRepository.findById(campeonatoId)
-                .orElseThrow(() -> new RuntimeException("Error: Campeonato no encontrado con ID " + campeonatoId));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Error: Campeonato no encontrado con ID " + campeonatoId));
 
         torneo.clasificarCopaDeOro();
         championshipRepository.save(torneo);
@@ -66,7 +67,7 @@ public class ChampionshipService {
     @Transactional
     public void ejecutarClasificacionUltimoMinuto(Long campeonatoId) {
         Championship torneo = championshipRepository.findById(campeonatoId)
-                .orElseThrow(() -> new RuntimeException("Error: Campeonato no encontrado con ID " + campeonatoId));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Error: Campeonato no encontrado con ID " + campeonatoId));
 
         torneo.clasificarTresDeUltimoMinuto();
         championshipRepository.save(torneo);
@@ -75,7 +76,7 @@ public class ChampionshipService {
     @Transactional(readOnly = true)
     public List<Driver> obtenerClasificadosCopaDeOro(Long campeonatoId) {
         Championship torneo = championshipRepository.findById(campeonatoId)
-                .orElseThrow(() -> new RuntimeException("Error: Campeonato no encontrado"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Error: Campeonato no encontrado"));
 
         return torneo.getCopaDeOro();
     }
@@ -85,7 +86,7 @@ public class ChampionshipService {
 
 
         Championship torneo = championshipRepository.findById(campeonatoId)
-                .orElseThrow(() -> new RuntimeException("Error: Campeonato no encontrado con ID " + campeonatoId));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Error: Campeonato no encontrado con ID " + campeonatoId));
 
 
         List<Driver> pilotosCopaDeOro = torneo.getCopaDeOro();

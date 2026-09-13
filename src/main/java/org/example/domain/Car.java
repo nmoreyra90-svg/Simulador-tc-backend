@@ -1,24 +1,42 @@
 package org.example.domain;
 
-public class Car {
+import jakarta.persistence.*;
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "brand_type", discriminatorType = DiscriminatorType.STRING)
+public abstract class Car {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String brand;
     private int carNumber;
+
+
+    @ManyToOne
+    @JoinColumn(name = "driver_id")
     private Driver driver;
 
-    public Car(Long id, String brand, int carNumber, Driver driver) {
+    protected int kilosDeLastre;
+
+
+    protected Car() {
+    }
+
+    public Car(Long id, int carNumber, Driver driver) {
         this.id = id;
-        this.brand = brand;
         this.carNumber = carNumber;
         this.driver = driver;
+        this.kilosDeLastre = 0;
+    }
+
+    public abstract int calcularVelocidadMaxima();
+
+    public void agregarLastre(int kilos) {
+        this.kilosDeLastre += kilos;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public String getBrand() {
-        return brand;
     }
 
     public int getCarNumber() {
@@ -27,5 +45,9 @@ public class Car {
 
     public Driver getDriver() {
         return driver;
+    }
+
+    public int getKilosDeLastre() {
+        return kilosDeLastre;
     }
 }
