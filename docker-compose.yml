@@ -1,0 +1,33 @@
+
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: tc_postgres
+    # Inyección de credenciales iniciales para que PostgreSQL cree la base de datos al levantar.
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+    # Volumen persistente: garantiza que los datos no se borren si el contenedor se destruye.
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    container_name: tc_backend
+    ports:
+      - "8080:8080"
+    # Garantiza que Spring Boot intente levantar después de que PostgreSQL haya iniciado.
+    depends_on:
+      - db
+    environment:
+      # Sobrescribimos 'localhost' por 'db' e inyectamos las credenciales desde el archivo .env
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+volumes:
+  postgres_data:
